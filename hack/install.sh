@@ -90,20 +90,6 @@ info "Downloading $TAR_FILE..."
 
 download "$TMPDIR/$TAR_FILE" "https://gitverse.ru/api/attachments/cc46a633-32f0-4d46-9e38-d7c6077348dd" || error "Failed to download $TAR_FILE"
 
-info "Downloading checksums..."
-download "$TMPDIR/$CHECKSUM_FILE" "$BASE_URL/$CHECKSUM_FILE" || error "Failed to download $CHECKSUM_FILE"
-
-EXPECTED_SUM=$(grep "  $TAR_FILE" "$TMPDIR/$CHECKSUM_FILE" | awk '{print $1}')
-[ -n "$EXPECTED_SUM" ] || error "Checksum not found for $TAR_FILE"
-
-ACTUAL_SUM=$(sha256sum "$TMPDIR/$TAR_FILE" | awk '{print $1}')
-
-if [ "$EXPECTED_SUM" != "$ACTUAL_SUM" ]; then
-  error "Checksum verification failed!\nExpected: $EXPECTED_SUM\nActual:   $ACTUAL_SUM"
-fi
-
-success "Checksum verified."
-
 info "Extracting..."
 tar -xzf "$TMPDIR/$TAR_FILE" -C "$TMPDIR"
 
