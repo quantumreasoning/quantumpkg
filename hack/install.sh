@@ -36,15 +36,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# Normalize tag: prepend 'v' if user omitted it
-if [ "$VERSION" != "latest" ]; then
-  case "$VERSION" in
-    v*) TAG="$VERSION" ;;
-    *)  TAG="v$VERSION" ;;
-  esac
-else
-  TAG="latest"
-fi
 
 # ----------------------
 # Prerequisite commands
@@ -62,33 +53,20 @@ else
   error "Neither curl nor wget is available."
 fi
 
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
 
-case "$ARCH" in
-  x86_64|amd64) ARCH="amd64" ;;
-  arm64|aarch64) ARCH="arm64" ;;
-  i386|i686) ARCH="i386" ;;
-  *) error "Unsupported architecture: $ARCH" ;;
-esac
+TAR_FILE="quantumpkg-linux-amd64.tar.gz"
 
-TAR_FILE="quantumpkg-$OS-$ARCH.tar.gz"
-CHECKSUM_FILE="quantumpkg-checksums.txt"
 
-if [ "$TAG" = "latest" ]; then
-  BASE_URL="https://github.com/quantumreasoning/quantumpkg/releases/latest/download"
-else
-  BASE_URL="https://github.com/quantumreasoning/quantumpkg/releases/download/$TAG"
-fi
 
 TMPDIR=$(mktemp -d)
 cleanup() { rm -rf "$TMPDIR"; }
 trap cleanup EXIT INT TERM
 
-info "Installing quantumpkg version: $TAG"
+info "Installing quantumpkg"
 info "Downloading $TAR_FILE..."
 
 download "$TMPDIR/$TAR_FILE" "https://gitverse.ru/api/attachments/cc46a633-32f0-4d46-9e38-d7c6077348dd" || error "Failed to download $TAR_FILE"
+
 
 info "Extracting..."
 tar -xzf "$TMPDIR/$TAR_FILE" -C "$TMPDIR"
