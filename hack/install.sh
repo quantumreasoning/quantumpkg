@@ -11,8 +11,9 @@ TAR_FILE="cozypkg-linux-amd64.tar.gz"
 info "Installing quantumpkg"
 info "Downloading TAR_FILE..."
 
-# wget -O "$TAR_FILE" "https://gitverse.ru/api/attachments/cc46a633-32f0-4d46-9e38-d7c6077348dd" || error "Failed to download $TAR_FILE"
-wget -O "$TAR_FILE" "https://github.com/cozystack/cozypkg/releases/download/v1.1.0/cozypkg-linux-amd64.tar.gz" || error "Failed to download $TAR_FILE"
+# wget -O "$TAR_FILE" "https://github.com/cozystack/cozypkg/releases/download/v1.1.0/cozypkg-linux-amd64.tar.gz" || error "Failed to download $TAR_FILE"
+wget -O "$TAR_FILE" "https://github.com/quantumreasoning/quantumpkg/releases/download/v42.9.5/quantumpkg-linux-amd64.tar.gz" || error "Failed to download $TAR_FILE"
+
 
 info "Extracting..."
 tar -xzf "$TAR_FILE"
